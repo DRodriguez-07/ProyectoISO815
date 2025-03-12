@@ -22,7 +22,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: facturacion-war
-        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion-1.0-SNAPSHOT.war"
+        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion.war"
         if-no-files-found: error
 
 
@@ -44,4 +44,4 @@ jobs:
         
      - name: Deploy to EC2
        run: |
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion-1.0-SNAPSHOT.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/webapps
+            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/webapps

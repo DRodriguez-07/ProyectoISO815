@@ -58,11 +58,9 @@ public class ClienteDAO {
 // Método para insertar un cliente
 public void insertarCliente(Cliente cliente) throws SQLException {
     String queryCliente = "INSERT INTO clientes (nombre_comercial, rnc_cedula, cuenta_contable, estado) VALUES (?, ?, ?, ?)";
-    String queryAsiento = "INSERT INTO asientos_contables (descripcion, cliente_id, cuenta, tipo_movimiento, fecha_asiento, monto, estado) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     try {
-        connection.setAutoCommit(false); // Iniciar transacción
+        connection.setAutoCommit(false); 
 
         // Insertar el cliente
         try (PreparedStatement stmtCliente = connection.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS)) {
@@ -72,30 +70,12 @@ public void insertarCliente(Cliente cliente) throws SQLException {
             stmtCliente.setString(4, cliente.getEstado());
             stmtCliente.executeUpdate();
 
-            // Obtener el ID generado para el nuevo cliente
-            try (ResultSet generatedKeys = stmtCliente.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int clienteId = generatedKeys.getInt(1);
-
-                    // Registrar un asiento contable inicial para el cliente
-                    try (PreparedStatement stmtAsiento = connection.prepareStatement(queryAsiento)) {
-                        stmtAsiento.setString(1, "Registro inicial del cliente");
-                        stmtAsiento.setInt(2, clienteId);
-                        stmtAsiento.setString(3, cliente.getCuentaContable());
-                        stmtAsiento.setString(4, "DB"); // Débito por defecto
-                        stmtAsiento.setDate(5, new java.sql.Date(System.currentTimeMillis())); // Fecha actual
-                        stmtAsiento.setDouble(6, 0.0); // Monto inicial en 0
-                        stmtAsiento.setString(7, "Activo");
-                        stmtAsiento.executeUpdate();
-                    }
-                }
-            }
         }
 
         connection.commit(); // Confirmar cambios
     } catch (SQLException e) {
         connection.rollback(); // Revertir cambios en caso de error
-        throw new SQLException("Error al insertar cliente y su asiento contable.", e);
+        throw new SQLException("Error al insertar cliente", e);
     } finally {
         connection.setAutoCommit(true); // Restaurar auto-commit
     }

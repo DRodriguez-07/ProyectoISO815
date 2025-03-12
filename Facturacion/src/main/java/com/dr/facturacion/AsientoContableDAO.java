@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AsientoContableDAO {
+
     private Connection connection;
 
     public AsientoContableDAO(Connection connection) {
@@ -18,13 +19,17 @@ public class AsientoContableDAO {
     // Insertar Asiento Contable
     public void insertarAsiento(AsientoContable asiento) throws SQLException {
         String sql = "INSERT INTO asientos_contables (descripcion, cliente_id, cuenta, tipo_movimiento, fecha, monto, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, asiento.getDescripcion());
             stmt.setInt(2, asiento.getClienteId());
             stmt.setString(3, asiento.getCuenta());
             stmt.setString(4, asiento.getTipoMovimiento());
-            stmt.setTimestamp(5, new Timestamp(asiento.getFecha().getTime()));
+            if (asiento.getFecha() != null) {
+                stmt.setDate(5, new java.sql.Date(asiento.getFecha().getTime()));
+            } else {
+                stmt.setDate(5, new java.sql.Date(System.currentTimeMillis())); // Usa la fecha actual
+            }
             stmt.setDouble(6, asiento.getMonto());
             stmt.setString(7, asiento.getEstado());
             stmt.executeUpdate();
@@ -36,8 +41,7 @@ public class AsientoContableDAO {
         List<AsientoContable> listaAsientos = new ArrayList<>();
         String sql = "SELECT * FROM asientos_contables";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 AsientoContable asiento = new AsientoContable(
                         rs.getInt("id"),
@@ -45,7 +49,7 @@ public class AsientoContableDAO {
                         rs.getInt("cliente_id"),
                         rs.getString("cuenta"),
                         rs.getString("tipo_movimiento"),
-                        rs.getTimestamp("fecha"),
+                        rs.getDate("fecha"),
                         rs.getDouble("monto"),
                         rs.getString("estado")
                 );
@@ -58,7 +62,7 @@ public class AsientoContableDAO {
     // Obtener Asiento por ID
     public AsientoContable obtenerAsiento(int id) throws SQLException {
         String sql = "SELECT * FROM asientos_contables WHERE id = ?";
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -69,7 +73,7 @@ public class AsientoContableDAO {
                             rs.getInt("cliente_id"),
                             rs.getString("cuenta"),
                             rs.getString("tipo_movimiento"),
-                            rs.getTimestamp("fecha"),
+                            rs.getDate("fecha"),
                             rs.getDouble("monto"),
                             rs.getString("estado")
                     );
@@ -82,13 +86,17 @@ public class AsientoContableDAO {
     // Actualizar Asiento Contable
     public void actualizarAsiento(AsientoContable asiento) throws SQLException {
         String sql = "UPDATE asientos_contables SET descripcion=?, cliente_id=?, cuenta=?, tipo_movimiento=?, fecha=?, monto=?, estado=? WHERE id=?";
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, asiento.getDescripcion());
             stmt.setInt(2, asiento.getClienteId());
             stmt.setString(3, asiento.getCuenta());
             stmt.setString(4, asiento.getTipoMovimiento());
-            stmt.setTimestamp(5, new Timestamp(asiento.getFecha().getTime()));
+            if (asiento.getFecha() != null) {
+                stmt.setDate(5, new java.sql.Date(asiento.getFecha().getTime()));
+            } else {
+                stmt.setDate(5, new java.sql.Date(System.currentTimeMillis())); // Usa la fecha actual
+            }
             stmt.setDouble(6, asiento.getMonto());
             stmt.setString(7, asiento.getEstado());
             stmt.setInt(8, asiento.getId());
@@ -99,11 +107,10 @@ public class AsientoContableDAO {
     // Eliminar Asiento Contable
     public void eliminarAsiento(int id) throws SQLException {
         String sql = "DELETE FROM asientos_contables WHERE id = ?";
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
     }
 }
-

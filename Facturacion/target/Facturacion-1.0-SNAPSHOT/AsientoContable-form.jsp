@@ -50,7 +50,7 @@
                 <!-- Fecha Asiento -->
                 <div class="mb-3">
                     <label for="fecha" class="form-label">Fecha de Asiento:</label>
-                    <input type="datetime-local" class="form-control" id="fecha" name="fecha" value="${asiento != null ? asiento.fecha : ''}" required>
+                    <input type="date" class="form-control" id="fecha" name="fecha" value="${asiento != null ? asiento.fecha : ''}" required>
                 </div>
 
                 <!-- Monto -->

@@ -24,3 +24,23 @@ jobs:
         name: facturacion-war
         path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion-1.0-SNAPSHOT.war"
         if-no-files-found: error
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+     - name: Download artifact
+       uses: actions/download-artifact@v4
+       with:
+        name: facturacion-war
+        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/"
+     - name: Set up SSH
+       run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        
+     - name: Deploy to EC2
+       run: |
+            scp -i "~/.ssh/id_rsa" -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion-1.0-SNAPSHOT.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/apache-tomcat-9.0.65/webapps

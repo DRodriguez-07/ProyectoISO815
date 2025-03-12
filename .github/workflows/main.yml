@@ -15,7 +15,6 @@ jobs:
         distribution: 'temurin'
         cache: maven 
     - name: Build with Maven
-      working-directory: ./Facturacion
       run: mvn clean package
     - name: Upload Artifact 
       if: success()

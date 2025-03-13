@@ -15,14 +15,13 @@ jobs:
         distribution: 'temurin'
         cache: maven 
     - name: Build with Maven
-      working-directory: ./Facturacion
       run: mvn clean package
     - name: Upload Artifact 
       if: success()
       uses: actions/upload-artifact@v4
       with:
         name: facturacion-war
-        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion.war"
+        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/target/Facturacion.war"
         if-no-files-found: error
 
 
@@ -34,7 +33,7 @@ jobs:
        uses: actions/download-artifact@v4
        with:
         name: facturacion-war
-        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/"
+        path: "/home/runner/work/ProyectoISO815/ProyectoISO815/target/"
      - name: Set up SSH
        run: |
         mkdir -p ~/.ssh
@@ -44,4 +43,4 @@ jobs:
         
      - name: Deploy to EC2
        run: |
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/Facturacion/target/Facturacion.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/webapps
+            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/target/Facturacion.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/webapps

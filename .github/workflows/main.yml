@@ -43,4 +43,4 @@ jobs:
         
      - name: Deploy to EC2
        run: |
-            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/target/Facturacion.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/webapps
+            scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no /home/runner/work/ProyectoISO815/ProyectoISO815/target/Facturacion.war ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/opt/tomcat/Facturacion

@@ -53,6 +53,6 @@
                 <version>3.4.0</version>
             </plugin>
         </plugins>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>ROOT</finalName>
     </build>
 </project>

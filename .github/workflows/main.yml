@@ -42,6 +42,4 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         port: 22
-        script: |
-          ps -ef | grep "Facturacion" | awk '{print $2}' | xargs kill
-          sudo nohup sudo java -jar /var/app/Facturacion/Facturacion.jar
+        script: ps -ef | grep "Facturacion" | awk '{print $2}' | xargs kill | sudo nohup sudo java -jar /var/app/Facturacion/Facturacion.jar

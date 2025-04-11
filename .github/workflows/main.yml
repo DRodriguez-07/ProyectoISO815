@@ -42,4 +42,4 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_KEY }}
         port: 22
-        script: sudo nohup /opt/app/Facturacion/run.sh &
+        script: sudo nohup /opt/app/Facturacion/run.sh >> /opt/app/nohup.out 2>&1 &

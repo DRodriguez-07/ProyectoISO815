@@ -19,7 +19,7 @@ jobs:
         cache: maven 
         
     - run: mvn clean package -DskipTests
-    - run: mkdir staging && mv target/Facturacion.jar && cp target/Facturacion.jar staging
+    - run: mkdir staging && cp target/Facturacion.jar staging
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:

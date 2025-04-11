@@ -1,0 +1,122 @@
+.page-bg {
+    background-color: #F8F9FF;
+}
+
+* {
+    font-family: "Roboto", sans-serif;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.logo-container {
+    padding: 0.4rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.login-card {
+    background-color: #fff;
+    box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+    border-radius: 5px;
+}
+
+.side-nav {
+    width: 14em;
+    display: flex;
+    background-color: #343957;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.page-logo {
+    max-width: 50px;
+}
+
+.app-name {
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 600;
+    color: white;
+    font-size: 1.3rem;
+}
+
+.nav-label {
+    font-size: 0.75rem;
+    padding: 1.5625rem 0 10px;
+    letter-spacing: 0.05rem;
+    margin: 0px 25px 0;
+    text-transform: uppercase;
+    color: #BDBDC7;
+}
+
+.side-nav-link {
+    text-align: left;
+    text-decoration: none;
+    color: #bdbdc7;
+    padding: 0.8125rem 1.25rem;
+    font-size: 0.875rem;
+}
+
+.side-nav-link:hover {
+    background-color: #6B51DF;
+    color: white;
+}
+
+.page-content {
+    display: flex;
+    flex: 1;
+    background-color: #F8F9FF;
+}
+
+.view-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #593bdb;
+    font-size: 1.25rem;
+}
+
+.view-description {
+    color: #BDBDC7;
+    font-size: 0.875rem;
+}
+
+.account-container {
+    display: flex;
+    align-self: end;
+}
+
+.page-card {
+    margin-bottom: 1.875rem;
+    background-color: #fff;
+    transition: all .5s ease-in-out;
+    position: relative;
+    border: 0px solid transparent;
+    border-radius: 0.25rem;
+    box-shadow: 0px 0px 13px 0px rgba(82, 63, 105, 0.05);
+}
+
+.card-header {
+    border-color: #eaeaea;
+    position: relative;
+    background: transparent;
+    padding: 1.25rem 1.25rem 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #454545;
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layout::head(~{::title})">
+    <title>Facturacion - Nuevo Artículo</title>
+</head>
+<body>
+    <div class="container-fluid d-flex flex-row h-100 p-0">
+    <div th:replace="layout::side-nav">
+    </div>
+    <div class="page-content">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Nuevo Artículo</h3>
+                    <p class="mb-0 view-description">Crea un nuevo artículo</p>
+                </div>
+            </div>
+
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Datos</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" th:action="@{/articulos}" th:object="${articulo}">
+                                <div class="mb-3">
+                                    <label class="form-label">Id</label>
+                                    <input class="form-control"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <input type="text" class="form-control" th:field="*{descripcion}"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <input class="form-control"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Precio Unitario</label>
+                                    <input class="form-control"></input>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

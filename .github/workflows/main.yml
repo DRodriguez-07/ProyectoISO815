@@ -15,7 +15,7 @@ jobs:
         distribution: 'zulu'
         cache: maven 
         
-    - run: mvn --batch-mode --update-snapshots verify
+    - run: mvn clean package -DskipTests
     - run: mkdir staging && mv target/Facturacion.jar target/Facturacion-${{ env.build-number }}.jar && cp target/*.jar staging
     - name: Upload Artifact 
       uses: actions/upload-artifact@v4

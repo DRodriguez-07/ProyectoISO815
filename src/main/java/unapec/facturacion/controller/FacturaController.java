@@ -40,7 +40,7 @@ public class FacturaController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        Factura f= new Factura(0L, 0L,0L,null, "",null);
+        Factura f= new Factura(0L, null, "",null, null, null);
         model.addAttribute("factura", f);
         return "factura_create";
     }

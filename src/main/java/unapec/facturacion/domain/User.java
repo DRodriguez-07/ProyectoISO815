@@ -1,9 +1,6 @@
 package unapec.facturacion.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -34,6 +31,8 @@ public class User implements UserDetails{
     private final String fullname;
     @Email
     private final String email;
+    @Enumerated(EnumType.ORDINAL)
+    private EstadoUsuario estado;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,5 +67,9 @@ public class User implements UserDetails{
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public enum EstadoUsuario {
+        ACTIVO, INACTIVO
     }
 }

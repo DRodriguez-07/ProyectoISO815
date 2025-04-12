@@ -8,6 +8,61 @@
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
     <div class="page-content">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Nuevo Vendedor</h3>
+                    <p class="mb-0 view-description">Crea un nuevo vendedor</p>
+                </div>
+            </div>
+
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Datos</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" th:action="@{/vendedores/new}" th:object="${vendedor}">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre</label>
+                                    <input type="text" class="form-control"
+                                           th:classappend="${#fields.hasErrors('nombre') ? 'is-invalid' : ''}"
+                                           th:field="*{nombre}"></input>
+                                    <div th:if="${#fields.hasErrors('nombre')}"
+                                         th:errors="*{nombre}" class="invalid-feedback">
+                                        Nombre Inválido
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Comisión</label>
+                                    <input type="number" class="form-control"
+                                           th:classappend="${#fields.hasErrors('porcientoComision') ? 'is-invalid' : ''}"
+                                           th:field="*{porcientoComision}"></input>
+                                    <div th:if="${#fields.hasErrors('precioUnitario')}"
+                                         th:errors="*{porcientoComision}" class="invalid-feedback">
+                                        Comisión invalida
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <select th:field="*{estado}" class="form-select" >
+                                        <option th:each="estado : ${T(unapec.facturacion.domain.Vendedor.EstadoVendedor).values()}"
+                                                th:value="${estado}" th:text="${estado}"></option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('estado')}"
+                                         th:errors="*{estado}" class="invalid-feedback">
+                                        Estado invalido
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

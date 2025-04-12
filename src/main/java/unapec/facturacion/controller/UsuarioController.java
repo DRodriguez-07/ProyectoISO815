@@ -37,14 +37,14 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public String details(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
-        model.addAttribute("user", user);
+        model.addAttribute("usuario", user);
 
         return "usuario_detail";
     }
 
     @GetMapping("/new")
     public String create(Model model) {
-        model.addAttribute("user", new RegistrationViewModel());
+        model.addAttribute("usuario", new RegistrationViewModel());
         return "usuario_create";
     }
 
@@ -61,7 +61,7 @@ public class UsuarioController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
-        model.addAttribute("user", user);
+        model.addAttribute("usuario", user);
         return "usuario_edit";
     }
 
@@ -80,7 +80,8 @@ public class UsuarioController {
     public String delete(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
         if(user != null) {
-
+            user.setEstado(User.EstadoUsuario.INACTIVO);
+            userRepository.save(user);
         }
 
         return "redirect:/usuarios";

@@ -29,6 +29,6 @@ public class Cliente {
         ACTIVO, INACTIVO
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Factura> facturas = new ArrayList<Factura>();
 }

@@ -20,10 +20,7 @@ public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value = 1, message = "El vendedor es requerido")
-    private Long vendedorId;
-    @Min(value = 1, message = "El cliente es requerido")
-    private Long clienteId;
+
     @NotNull
     public Date fecha = new Date();
 
@@ -33,4 +30,10 @@ public class Factura {
     @OneToMany
     @Size(min = 1, message = "Debe agregar al menos 1 artículo")
     private List<DetalleFactura> detalleFacturas;
+
+    @ManyToOne
+    private Cliente cliente;
+
+    @ManyToOne
+    private Vendedor vendedor;
 }

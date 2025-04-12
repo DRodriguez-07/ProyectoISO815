@@ -6,7 +6,8 @@ CREATE OR REPLACE table User(
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     fullname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL
+    email VARCHAR(255) NOT NULL,
+    estado TINYINT DEFAULT 0
 );
 
 CREATE OR REPLACE TABLE Cliente (
@@ -24,7 +25,7 @@ CREATE OR REPLACE table Articulo (
     estado TINYINT DEFAULT 1
 );
 
-CREATE OR REPLACE table AsientoContable (
+CREATE OR REPLACE table Asiento_Contable (
 	id bigint auto_increment primary key,
 	descripcion VARCHAR(255),
 	cliente_id bigint references Cliente(id),
@@ -51,7 +52,7 @@ CREATE OR REPLACE table Factura (
     comentario VARCHAR(255) NOT NULL
 )
 
-CREATE OR REPLACE table DetalleFactura (
+CREATE OR REPLACE table Detalle_Factura (
 	id bigint auto_increment primary key,
 	factura_id bigint not null references Factura(id),
 	articulo_id bigint not null,

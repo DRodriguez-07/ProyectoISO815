@@ -40,7 +40,7 @@ public class ArticuloController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        Articulo a = new Articulo(0L, "", Articulo.EstadoArticulo.ACTIVO, 0);
+        Articulo a = new Articulo(0L, "", Articulo.EstadoArticulo.ACTIVO,0.0, null);
         model.addAttribute("articulo", a);
         return "articulo_create";
     }

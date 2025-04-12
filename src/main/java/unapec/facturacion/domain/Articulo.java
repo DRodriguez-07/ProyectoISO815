@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -22,10 +25,13 @@ public class Articulo {
     @Enumerated(EnumType.ORDINAL)
     private EstadoArticulo estado;
 
-    @Min(value = 0,message = "El valor debe ser mayor a 0")
+    @Min(value = 1,message = "El valor debe ser mayor a 0")
     private double precioUnitario = 0.0;
 
     public enum EstadoArticulo {
         ACTIVO, INACTIVO
     }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "articulo")
+    private List<DetalleFactura> detallesFactura = new ArrayList<DetalleFactura>();
 }

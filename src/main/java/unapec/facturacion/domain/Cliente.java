@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import unapec.facturacion.annotation.RNCCedulaConstraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ public class Cliente {
     private Long id;
 
     private String nombreRazon;
+    @RNCCedulaConstraint
     private String rncCedula;
-    private String cuentaContrable;
+    private String cuentaContable;
     @Enumerated(EnumType.ORDINAL)
     private EstadoCliente estado;
     public enum EstadoCliente  {

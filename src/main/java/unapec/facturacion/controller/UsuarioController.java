@@ -60,6 +60,8 @@ public class UsuarioController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
+        User user = userRepository.findById(id).orElse(null);
+        model.addAttribute("user", user);
         return "usuario_edit";
     }
 
@@ -68,6 +70,8 @@ public class UsuarioController {
         if(errors.hasErrors()) {
             return "usuario_edit";
         }
+
+        userRepository.save(form.toUser(passwordEncoder));
 
         return "redirect:/usuarios";
     }

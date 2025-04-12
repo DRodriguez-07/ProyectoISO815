@@ -55,6 +55,8 @@ public class VendedorController {
 
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable Long id) {
+        Vendedor v = repository.findById(id).orElse(null);
+        model.addAttribute("vendedor", v);
         return "vendedor_edit";
     }
 
@@ -64,6 +66,7 @@ public class VendedorController {
             return "vendedor_edit";
         }
 
+        repository.save(vendedor);
         return "redirect:/vendedores";
     }
 

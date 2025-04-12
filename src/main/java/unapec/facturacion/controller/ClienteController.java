@@ -57,6 +57,8 @@ public class ClienteController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
+        Cliente c = repository.findById(id).orElse(null);
+        model.addAttribute("cliente", c);
         return "cliente_edit";
     }
 
@@ -66,6 +68,7 @@ public class ClienteController {
             return "cliente_edit";
         }
 
+        repository.save(c);
         return "redirect:/clientes";
     }
 

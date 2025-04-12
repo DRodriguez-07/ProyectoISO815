@@ -57,6 +57,9 @@ public class FacturaController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
+        Factura f = facturaRepository.findById(id).orElse(null);
+        model.addAttribute("factura", f);
+
         return "factura_edit";
     }
 

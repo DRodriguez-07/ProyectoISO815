@@ -23,7 +23,7 @@ public class Articulo {
     private EstadoArticulo estado;
 
     @Min(value = 0,message = "El valor debe ser mayor a 0")
-    private double precioUnitario;
+    private double precioUnitario = 0.0;
 
     public enum EstadoArticulo {
         ACTIVO, INACTIVO

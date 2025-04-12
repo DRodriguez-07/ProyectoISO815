@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head(~{::title})">
+    <title>Facturacion</title>
 </head>
 <body>
+<div class="container-fluid d-flex flex-row h-100 p-0">
+    <div th:replace="layout::side-nav"></div>
+    <div class="page-content">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Artículo</h3>
+                    <p class="mb-0 view-description">Datos de <span th:text="${articulo.descripcion}"></span></p>
+                </div>
+            </div>
 
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Datos</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span>Id: </span>
+                                        <span th:text="${articulo.id}"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>Descripcion: </span>
+                                        <span th:text="${articulo.descripcion}"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span>Estado: </span>
+                                        <span th:text="${articulo.estado}"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>Precio: </span>
+                                        <span th:text="${#numbers.formatCurrency(articulo.precioUnitario)}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

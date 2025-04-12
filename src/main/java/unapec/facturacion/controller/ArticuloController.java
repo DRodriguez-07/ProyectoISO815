@@ -58,6 +58,8 @@ public class ArticuloController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
+        Articulo a = articuloRepository.findById(id).orElse(null);
+        model.addAttribute("articulo", a);
         return "articulo_edit";
     }
 
@@ -66,7 +68,7 @@ public class ArticuloController {
         if(errors.hasErrors()) {
             return "articulo_edit";
         }
-
+        articuloRepository.save(articulo);
         return "redirect:/articulos";
     }
 

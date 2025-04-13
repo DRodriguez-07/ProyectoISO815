@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -22,11 +23,12 @@ public class Factura {
     private Long id;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date fecha = new Date();
 
     public String comentario;
 
-    @NotNull
+    //@NotNull
     @OneToMany
     @Size(min = 1, message = "Debe agregar al menos 1 artículo")
     private List<DetalleFactura> detalleFacturas;

@@ -37,9 +37,10 @@
                                 <div class="mb-3">
                                     <label class="form-label">Comisión</label>
                                     <input type="number" class="form-control"
+                                           step="0.01"
                                            th:classappend="${#fields.hasErrors('porcientoComision') ? 'is-invalid' : ''}"
                                            th:field="*{porcientoComision}"></input>
-                                    <div th:if="${#fields.hasErrors('precioUnitario')}"
+                                    <div th:if="${#fields.hasErrors('porcientoComision')}"
                                          th:errors="*{porcientoComision}" class="invalid-feedback">
                                         Comisión invalida
                                     </div>

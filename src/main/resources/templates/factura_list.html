@@ -8,6 +8,56 @@
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
     <div class="page-content">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Facturas</h3>
+                    <p class="mb-0 view-description">Lista de Facturas</p>
+                </div>
+            </div>
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-body">
+                            <div class="row my-2">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <a class="btn btn-info" th:href="@{/facturas/new}">Nueva Factura</a>
+                                </div>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Fecha</th>
+                                    <th>Comentario</th>
+                                    <th>Cliente</th>
+                                    <th>Vendedor</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="factura: ${facturas}">
+                                    <td th:text="${factura.id}"></td>
+                                    <td th:text="${#dates.format(factura.fecha, 'dd/MM/yyyy')}"></td>
+                                    <td></td>
+                                    <td th:text="${factura.cliente.nombreRazon}"></td>
+                                    <td th:text="${factura.vendedor.nombre}"></td>
+                                    <td>
+                                        <a th:href="@{/facturas/{id}(id=${factura.id})}"
+                                           class="btn btn-primary">Ver</a>
+                                        <a th:href="@{/facturas/delete/{id}(id=${factura.id})}"
+                                           class="btn btn-primary">Borrar</a>
+                                        <a th:href="@{/facturas/edit/{id}(id=${factura.id})}"
+                                           class="btn btn-primary">Actualizar</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

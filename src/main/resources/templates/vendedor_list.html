@@ -38,7 +38,7 @@
                                 <tr th:each="vendedor: ${vendedores}">
                                     <td th:text="${vendedor.id}"></td>
                                     <td th:text="${vendedor.nombre}"></td>
-                                    <td th:text="${#numbers.formatDecimal(vendedor.porcientoComision)}"></td>
+                                    <td th:text="${#numbers.formatPercent(vendedor.porcientoComision, 1, 2)}"></td>
                                     <td th:text="${vendedor.estado}"></td>
                                     <td>
                                         <a th:href="@{/vendedores/{id}(id=${vendedor.id})}"

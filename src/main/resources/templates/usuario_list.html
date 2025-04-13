@@ -41,11 +41,11 @@
                                     <td th:text="${usuario.username}"></td>
                                     <td th:text="${usuario.email}"></td>
                                     <td>
-                                        <a th:href="@{/articulos/{id}(id=${usuario.id})}"
+                                        <a th:href="@{/usuarios/{id}(id=${usuario.id})}"
                                            class="btn btn-primary">Ver</a>
-                                        <a th:href="@{/articulos/delete/{id}(id=${usuario.id})}"
+                                        <a th:href="@{/usuarios/delete/{id}(id=${usuario.id})}"
                                            class="btn btn-primary">Borrar</a>
-                                        <a th:href="@{/articulos/edit/{id}(id=${usuario.id})}"
+                                        <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}"
                                            class="btn btn-primary">Actualizar</a>
                                     </td>
                                 </tr>

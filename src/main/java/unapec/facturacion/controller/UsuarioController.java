@@ -30,7 +30,7 @@ public class UsuarioController {
 
     @GetMapping("")
     public String index(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("usuarios", userRepository.findAll());
         return "usuario_list";
     }
 

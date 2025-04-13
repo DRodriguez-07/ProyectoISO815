@@ -19,6 +19,7 @@ public class AsientoContable {
     private Long id;
     private String descripcion;
     private Long clienteId;
+    @Column(length = 50)
     private String cuentaContable;
     @Enumerated(EnumType.ORDINAL)
     private TipoMovmienteoAsienteContable tipoMovimiento;

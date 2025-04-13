@@ -11,17 +11,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import unapec.facturacion.domain.Factura;
+import unapec.facturacion.repository.ClienteRepository;
 import unapec.facturacion.repository.FacturaRepository;
+import unapec.facturacion.repository.VendedorRepository;
 
 @Slf4j
 @Controller
 @RequestMapping("/facturas")
 public class FacturaController {
     private final FacturaRepository facturaRepository;
+    private final ClienteRepository clienteRepository;
+    private final VendedorRepository vendedorRepository;
 
     @Autowired
-    public FacturaController(FacturaRepository facturaRepository) {
+    public FacturaController(FacturaRepository facturaRepository, ClienteRepository clienteRepository, VendedorRepository vendedorRepository) {
         this.facturaRepository = facturaRepository;
+        this.clienteRepository = clienteRepository;
+        this.vendedorRepository = vendedorRepository;
     }
 
     @GetMapping("")
@@ -42,12 +48,16 @@ public class FacturaController {
     public String create(Model model) {
         Factura f= new Factura(0L, null, "",null, null, null);
         model.addAttribute("factura", f);
+        model.addAttribute("clientes", clienteRepository.findAll());
+        model.addAttribute("vendedores", vendedorRepository.findAll());
         return "factura_create";
     }
 
     @PostMapping("/new")
-    public String create(@Valid Factura factura, Errors errors) {
+    public String create(@Valid Factura factura, Errors errors, Model model) {
         if(errors.hasErrors()) {
+            model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("vendedores", vendedorRepository.findAll());
             return "factura_create";
         }
 

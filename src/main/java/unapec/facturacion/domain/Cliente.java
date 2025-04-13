@@ -22,6 +22,7 @@ public class Cliente {
     private String nombreRazon;
     @RNCCedulaConstraint
     private String rncCedula;
+    @Column(length = 50)
     private String cuentaContable;
     @Enumerated(EnumType.ORDINAL)
     private EstadoCliente estado;

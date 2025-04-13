@@ -8,6 +8,104 @@
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
     <div class="page-content">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Nueva Factura</h3>
+                    <p class="mb-0 view-description">Crea una nueva factura</p>
+                </div>
+            </div>
+
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Datos</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" th:action="@{/facturas/new}" th:object="${factura}">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha</label>
+                                        <input type="date" class="form-control"
+                                               th:classappend="${#fields.hasErrors('fecha') ? 'is-invalid' : ''}"
+                                               th:field="*{fecha}"></input>
+                                        <div th:if="${#fields.hasErrors('fecha')}"
+                                             th:errors="*{fecha}" class="invalid-feedback">
+                                            Fecha Inválida
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Vendedor</label>
+                                        <select th:field="*{vendedor}" class="form-select" >
+                                            <option th:each="vendedorO : ${vendedores}"
+                                                    th:value="${vendedorO.id}" th:text="${vendedorO.nombre}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('vendedor')}"
+                                             th:errors="*{vendedor}" class="invalid-feedback">
+                                            Vendedor invalido
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Cliente</label>
+                                        <select th:field="*{cliente}" class="form-select" >
+                                            <option th:each="clienteO : ${clientes}"
+                                                    th:value="${clienteO.id}" th:text="${clienteO.nombreRazon}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('cliente')}"
+                                             th:errors="*{cliente}" class="invalid-feedback">
+                                            Cliente invalido
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Comentario</label>
+                                    <textarea rows="4" class="form-control"
+                                              th:classappend="${#fields.hasErrors('comentario') ? 'is-invalid' : ''}"
+                                              th:field="*{comentario}"></textarea>
+                                    <div th:if="${#fields.hasErrors('comentario')}"
+                                         th:errors="*{comentario}" class="invalid-feedback">
+                                        Comentario invalido
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Detalles</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row my-2">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <a class="btn btn-info" href="#">Nuevo Registro</a>
+                                </div>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Articulo</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

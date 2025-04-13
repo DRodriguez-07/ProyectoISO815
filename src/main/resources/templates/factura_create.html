@@ -7,8 +7,12 @@
 <body>
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
-    <div class="page-content">
-        <div class="container">
+    <div class="page-content overflow-auto">
+        <form method="POST" th:action="@{/facturas/new}" th:object="${factura}" class="container">
+            <select id="articulo-select-base" style="display: none" class="form-select" >
+                <option th:each="articulo : ${articulos}"
+                        th:value="${articulo.id}" th:text="${articulo.descripcion}"></option>
+            </select>
             <div class="row my-4 justify-content-center">
                 <div class="col-md-12 rounded bg-white p-3">
                     <h3 class="view-title">Nueva Factura</h3>
@@ -23,7 +27,6 @@
                             <h4 class="card-title">Datos</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" th:action="@{/facturas/new}" th:object="${factura}">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha</label>
@@ -70,8 +73,6 @@
                                         Comentario invalido
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -85,7 +86,7 @@
                         <div class="card-body">
                             <div class="row my-2">
                                 <div class="col-md-12 d-flex justify-content-end">
-                                    <a class="btn btn-info" href="#">Nuevo Registro</a>
+                                    <a class="btn btn-info" id="btn-nuevo-detalle" href="#">Nuevo Registro</a>
                                 </div>
                             </div>
                             <table class="table">
@@ -97,7 +98,7 @@
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="detalle-tbody">
 
                                 </tbody>
                             </table>
@@ -105,8 +106,52 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="row my-4 justify-content-end">
+                <div class="col-md-2 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#btn-nuevo-detalle').click(function() {
+            let index = $("#detalle-tbody").children().length;
+            console.log("New index is: " + index);
+            let select = $('#articulo-select-base').clone();
+            select.removeAttr('id');
+            select.removeAttr('style');
+            select.addClass("articulo-select");
+            select.attr('name', 'detalleFacturas[].articulo');
+
+            $('#detalle-tbody').append(`
+            <tr>
+                <td><input type="hidden" name="detalleFacturas[].id" value="0" /> <input class="form-control" name="detalleFacturas[].cantidad" step="1" type="number" min="0" value="0"></input></td>
+                <td><input class="form-control" name="detalleFacturas[].precioUnitario" readonly type="number" min="0" value="0"></input></td>
+                <td>${$(select).prop('outerHTML')}</td>
+                <td><a href="#" class="btn btn-danger borrar-detalle"><i class="fa-solid fa-trash"></i></a> </td>
+            </tr>
+            `);
+            console.log('Generando nuevo detalle');
+            $('.borrar-detalle').last().click(function() {
+                $(this).closest('tr').remove();
+                updateIndexes();
+            });
+
+            $('.articulo-select').last().change(function() {
+                let artId = $(this).val();
+
+               $.ajax({url: `api/articulos/${artId}`, success: function (data) {
+                   console.log('Called API');
+                   console.log(data);
+               }});
+            });
+            function updateIndexes() {
+              console.log('Updating indexes');
+            }
+        });
+    });
+</script>
 </html>

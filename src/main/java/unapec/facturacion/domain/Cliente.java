@@ -26,6 +26,10 @@ public class Cliente {
     private String cuentaContable;
     @Enumerated(EnumType.ORDINAL)
     private EstadoCliente estado;
+
+    public Cliente(String cartonesDelCaribeSas, String number, String number1, EstadoCliente estadoCliente, List<Factura> facturas) {
+    }
+
     public enum EstadoCliente  {
         ACTIVO, INACTIVO
     }

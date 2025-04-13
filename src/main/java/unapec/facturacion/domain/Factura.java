@@ -31,7 +31,7 @@ public class Factura {
     //@NotNull
     @OneToMany
     @Size(min = 1, message = "Debe agregar al menos 1 artículo")
-    private List<DetalleFactura> detalleFacturas;
+    private List<DetalleFactura> detallesFactura;
 
     @ManyToOne
     private Cliente cliente;

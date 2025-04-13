@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import unapec.facturacion.domain.Factura;
+import unapec.facturacion.repository.ArticuloRepository;
 import unapec.facturacion.repository.ClienteRepository;
 import unapec.facturacion.repository.FacturaRepository;
 import unapec.facturacion.repository.VendedorRepository;
@@ -22,12 +23,14 @@ public class FacturaController {
     private final FacturaRepository facturaRepository;
     private final ClienteRepository clienteRepository;
     private final VendedorRepository vendedorRepository;
+    private final ArticuloRepository articuloRepository;
 
     @Autowired
-    public FacturaController(FacturaRepository facturaRepository, ClienteRepository clienteRepository, VendedorRepository vendedorRepository) {
+    public FacturaController(FacturaRepository facturaRepository, ClienteRepository clienteRepository, VendedorRepository vendedorRepository, ArticuloRepository articuloRepository) {
         this.facturaRepository = facturaRepository;
         this.clienteRepository = clienteRepository;
         this.vendedorRepository = vendedorRepository;
+        this.articuloRepository = articuloRepository;
     }
 
     @GetMapping("")
@@ -50,6 +53,7 @@ public class FacturaController {
         model.addAttribute("factura", f);
         model.addAttribute("clientes", clienteRepository.findAll());
         model.addAttribute("vendedores", vendedorRepository.findAll());
+        model.addAttribute("articulos", articuloRepository.findAll());
         return "factura_create";
     }
 
@@ -58,6 +62,7 @@ public class FacturaController {
         if(errors.hasErrors()) {
             model.addAttribute("clientes", clienteRepository.findAll());
             model.addAttribute("vendedores", vendedorRepository.findAll());
+            model.addAttribute("articulos", articuloRepository.findAll());
             return "factura_create";
         }
 

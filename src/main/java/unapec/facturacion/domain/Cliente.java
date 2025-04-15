@@ -1,6 +1,7 @@
 package unapec.facturacion.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,8 @@ public class Cliente {
     private String nombreRazon;
     @RNCCedulaConstraint
     private String rncCedula;
-    @Column(length = 50)
-    private String cuentaContable;
+    @Min(value = 1)
+    private Integer cuentaContable;
     @Enumerated(EnumType.ORDINAL)
     private EstadoCliente estado;
 

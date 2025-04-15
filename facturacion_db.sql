@@ -14,7 +14,7 @@ CREATE TABLE Cliente (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre_razon VARCHAR(255) NOT NULL,
     rnc_cedula VARCHAR(20) NOT NULL UNIQUE,
-    cuenta_contable VARCHAR(50) NOT NULL,
+    cuenta_contable INT NOT NULL,
     estado TINYINT DEFAULT 1
 );
 
@@ -29,10 +29,10 @@ CREATE table Asiento_Contable (
     id bigint auto_increment primary key,
     descripcion VARCHAR(255),
     cliente_id bigint references Cliente(id),
-    cuenta_contable VARCHAR(50) not null,
-    -- 1 Debito, 2 Credito
-    tipo_movimiento tinyint not NULL,
+    cuenta_contable INT not null,
     fecha DATETIME default CURRENT_TIMESTAMP,
+    fecha_desde DATETIME,
+    fecha_hasta DATETIME,
     monto DECIMAL(10,2) NOT null,
     estado tinyint not NULL
 );

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import unapec.facturacion.domain.DetalleFactura;
 import unapec.facturacion.domain.Factura;
 import unapec.facturacion.repository.ArticuloRepository;
 import unapec.facturacion.repository.ClienteRepository;
@@ -64,6 +65,10 @@ public class FacturaController {
             model.addAttribute("vendedores", vendedorRepository.findAll());
             model.addAttribute("articulos", articuloRepository.findAll());
             return "factura_create";
+        }
+
+        for(DetalleFactura d : factura.getDetallesFactura()) {
+            d.setFactura(factura);
         }
 
         facturaRepository.save(factura);

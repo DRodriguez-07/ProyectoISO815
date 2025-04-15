@@ -15,7 +15,7 @@ import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Factura {
     @Id

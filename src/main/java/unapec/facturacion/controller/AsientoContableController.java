@@ -78,7 +78,7 @@ public class AsientoContableController {
     public String delete(Model model, @PathVariable Long id) {
         AsientoContable a = asientoContableRepository.findById(id).orElse(null);
         if(a != null) {
-            a.setEstado(AsientoContable.EstadoAsientoContable.Inactivo);
+            //a.setEstado(AsientoContable.EstadoAsientoContable.Pendiente);
             asientoContableRepository.save(a);
         }
 

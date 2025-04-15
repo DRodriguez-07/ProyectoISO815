@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import unapec.facturacion.domain.DetalleFactura;
 import unapec.facturacion.domain.Factura;
 import unapec.facturacion.repository.ArticuloRepository;
@@ -35,8 +32,22 @@ public class FacturaController {
     }
 
     @GetMapping("")
-    public String index(Model model) {
-        model.addAttribute("facturas", facturaRepository.findAll());
+    public String index(Model model, @RequestParam(value = "vendedorId", required = false) Long vendedorId, @RequestParam(value = "clienteId", required = false) Long clienteId) {
+        Iterable<Factura> facturas = null;
+
+        if(vendedorId != null && clienteId != null) {
+            facturas = facturaRepository.findFacturasByVendedor_IdAndCliente_Id(vendedorId, clienteId);
+        } else if(vendedorId != null) {
+            facturas = facturaRepository.findFacturasByVendedor_Id(vendedorId);
+        } else if(clienteId != null) {
+            facturas = facturaRepository.findFacturasByCliente_Id(clienteId);
+        } else {
+            facturas = facturaRepository.findAll();
+        }
+
+        model.addAttribute("clientes", clienteRepository.findAll());
+        model.addAttribute("vendedores", vendedorRepository.findAll());
+        model.addAttribute("facturas", facturas);
         return "factura_list";
     }
 

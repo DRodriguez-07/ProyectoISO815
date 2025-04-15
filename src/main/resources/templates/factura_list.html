@@ -21,8 +21,36 @@
                         <div class="card-body">
                             <div class="row my-2">
                                 <div class="col-md-12 d-flex justify-content-end">
+                                    <a class="btn btn-primary mx-2"  data-bs-toggle="collapse" href="#filtro-collapse" role="button">Filtro</a>
                                     <a class="btn btn-info" th:href="@{/facturas/new}">Nueva Factura</a>
                                 </div>
+                            </div>
+                            <div class="collapse" id="filtro-collapse">
+                                <form method="GET" th:action="@{/facturas}">
+
+                                <div class="row my-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Vendedor</label>
+                                            <select name="vendedorId" id="vendedor-select" class="form-select" >
+                                                <option value="" >Todos</option>
+                                                <option th:each="vendedorO : ${vendedores}"
+                                                        th:value="${vendedorO.id}" th:text="${vendedorO.nombre}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Cliente</label>
+                                            <select name="clienteId" class="form-select" >
+                                                <option value="" >Todos</option>
+                                                <option th:each="clienteO : ${clientes}"
+                                                        th:value="${clienteO.id}" th:text="${clienteO.nombreRazon}"></option>
+                                            </select>
+                                        </div>
+                                </div>
+                                <div class="row my-2">
+                                    <input type="submit" class="btn btn-success" value="Buscar">
+                                </div>
+                                </form>
+
                             </div>
                             <table class="table data-table">
                                 <thead>

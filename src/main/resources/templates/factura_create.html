@@ -10,6 +10,7 @@
     <div class="page-content overflow-auto">
         <form method="POST" th:action="@{/facturas/new}" th:object="${factura}" class="container">
             <select id="articulo-select-base" style="display: none" class="form-select" >
+                <option value=""></option>
                 <option th:each="articulo : ${articulos}"
                         th:value="${articulo.id}" th:text="${articulo.descripcion}"></option>
             </select>
@@ -42,8 +43,9 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Vendedor</label>
-                                        <select th:field="*{vendedor}" class="form-select" >
+                                        <select id="vendedor-select" th:field="*{vendedor}" class="form-select" >
                                             <option th:each="vendedorO : ${vendedores}"
+                                                    th:attr="data-comision=${vendedorO.porcientoComision}"
                                                     th:value="${vendedorO.id}" th:text="${vendedorO.nombre}"></option>
                                         </select>
                                         <div th:if="${#fields.hasErrors('vendedor')}"
@@ -93,14 +95,20 @@
                                 <thead>
                                 <tr>
                                     <th>Cantidad</th>
-                                    <th>Precio</th>
+                                    <th>Precio Unitario</th>
                                     <th>Articulo</th>
+                                    <th>Subtotal</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody id="detalle-tbody">
 
                                 </tbody>
+                                <tfoot>
+                                    <tr><td></td><td></td><td></td><td>Subtotal</td><td><input id="fact-subtotal" readonly class="form-control" /></td></tr>
+                                    <tr><td></td><td></td><td></td><td>Comisión</td><td><input id="fact-comision" readonly class="form-control" /></td></tr>
+                                    <tr><td></td><td></td><td></td><td>Total</td><td><input id="fact-total" readonly class="form-control" /></td></tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -117,39 +125,94 @@
 </body>
 <script>
     $(document).ready(function() {
+        function updateTotal() {
+            let sub = 0;
+            $('.subtotal').each(function() {
+                let input = $(this);
+                sub += parseFloat($(input).val());
+            });
+
+            let comision = $('#vendedor-select option:selected').data('comision') || "0";
+            comision = parseFloat(comision);
+
+            let total = Math.round(sub + (sub * comision));
+
+            $('#fact-total').val(total);
+            $('#fact-comision').val((comision * 100) + '%');
+            $('#fact-subtotal').val(sub);
+        }
+
+        $('#vendedor-select').change(function () {
+           updateTotal();
+        });
+
         $('#btn-nuevo-detalle').click(function() {
             let index = $("#detalle-tbody").children().length;
-            console.log("New index is: " + index);
             let select = $('#articulo-select-base').clone();
             select.removeAttr('id');
             select.removeAttr('style');
-            select.addClass("articulo-select");
-            select.attr('name', 'detalleFacturas[].articulo');
+            select.addClass("articulo-select articulo");
+            select.attr('name', 'detallesFactura[].articulo');
 
             $('#detalle-tbody').append(`
             <tr>
-                <td><input type="hidden" name="detalleFacturas[].id" value="0" /> <input class="form-control" name="detalleFacturas[].cantidad" step="1" type="number" min="0" value="0"></input></td>
-                <td><input class="form-control" name="detalleFacturas[].precioUnitario" readonly type="number" min="0" value="0"></input></td>
+                <td><input class="id" type="hidden" name="detallesFactura[].id" /> <input class="form-control cantidad" name="detallesFactura[].cantidad" step="1" type="number" min="1" value="1"></input></td>
+                <td><input class="form-control precioUnitario" name="detallesFactura[].precioUnitario" readonly type="number" min="0" value="0"></input></td>
                 <td>${$(select).prop('outerHTML')}</td>
+                <td><input class="form-control subtotal" readonly /></td>
                 <td><a href="#" class="btn btn-danger borrar-detalle"><i class="fa-solid fa-trash"></i></a> </td>
             </tr>
             `);
-            console.log('Generando nuevo detalle');
+
             $('.borrar-detalle').last().click(function() {
                 $(this).closest('tr').remove();
                 updateIndexes();
             });
 
             $('.articulo-select').last().change(function() {
+                let indx =  $(this).parent().children('.articulo-select').index(this);
                 let artId = $(this).val();
+                let select = $(this);
+                const full = location.protocol + '//' + location.host;
 
-               $.ajax({url: `api/articulos/${artId}`, success: function (data) {
-                   console.log('Called API');
-                   console.log(data);
+                $.ajax({url: `${full}/api/articulos/${artId}`, success: function (data) {
+                   $(select).closest('tr').find('.precioUnitario').val(data.precioUnitario);
+                    for (let i = 0; i < $('#detalle-tbody tr').length; i++) {
+                        updateSubtotal(i);
+                    }
                }});
             });
+
+            $('input.cantidad').last().change(function() {
+                for (let i = 0; i < $('#detalle-tbody tr').length; i++) {
+                    updateSubtotal(i);
+                }
+
+                // updateSubtotal(indx);
+            });
+
+            updateIndexes();
+
+            function updateSubtotal(index) {
+                let cantidadInput = $('input.cantidad').eq(index);
+                let cantidad = $(cantidadInput).val();
+                let precio = $(cantidadInput).closest('tr').find('.precioUnitario').val();
+                $(cantidadInput).closest('tr').find('.subtotal').val(cantidad * precio);
+                updateTotal();
+            }
+
             function updateIndexes() {
-              console.log('Updating indexes');
+              $('#detalle-tbody tr').each(function(indx) {
+                  let row = $(this);
+                  let inpId = $(row).find('.id').first();
+                  let inpCantidad = $(row).find('.cantidad').first();
+                  let inpPrecio = $(row).find('.precioUnitario').first();
+                  let selectArt = $(row).find('.articulo-select').first();
+                  $(inpId).attr('name', $(inpId).attr('name').replace(/detallesFactura\[\d*]/i, `detallesFactura[${indx}]`));
+                  $(inpCantidad).attr('name', $(inpCantidad).attr('name').replace(/detallesFactura\[\d*]/i, `detallesFactura[${indx}]`));
+                  $(inpPrecio).attr('name', $(inpPrecio).attr('name').replace(/detallesFactura\[\d*]/i, `detallesFactura[${indx}]`));
+                  $(selectArt).attr('name', $(selectArt).attr('name').replace(/detallesFactura\[\d*]/i, `detallesFactura[${indx}]`));
+              });
             }
         });
     });

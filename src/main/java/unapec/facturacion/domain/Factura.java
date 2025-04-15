@@ -29,7 +29,7 @@ public class Factura {
     public String comentario;
 
     //@NotNull
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @Size(min = 1, message = "Debe agregar al menos 1 artículo")
     private List<DetalleFactura> detallesFactura;
 

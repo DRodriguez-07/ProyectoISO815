@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import unapec.facturacion.domain.User;
 import unapec.facturacion.repository.UserRepository;
+import unapec.facturacion.service.ContabilidadClient;
 import unapec.facturacion.viewmodel.RegistrationViewModel;
 
 @Slf4j

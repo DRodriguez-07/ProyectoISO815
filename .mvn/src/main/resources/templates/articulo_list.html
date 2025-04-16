@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head(~{::title})">
+    <title>Facturacion - Articulos</title>
+</head>
+<body>
+<div class="container-fluid d-flex flex-row h-100 p-0">
+    <div th:replace="layout::side-nav">
+    </div>
+    <div class="page-content overflow-auto">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Artículos</h3>
+                    <p class="mb-0 view-description">Lista de articulos</p>
+                </div>
+            </div>
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-body">
+                            <div class="row my-2">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <a class="btn btn-info" th:href="@{/articulos/new}">Nuevo Artículo</a>
+                                </div>
+                            </div>
+                            <table class="table data-table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Descripción</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="articulo: ${articulos}">
+                                    <td th:text="${articulo.id}"></td>
+                                    <td th:text="${articulo.descripcion}"></td>
+                                    <td th:text="${articulo.precioUnitario}"></td>
+                                    <td>
+                                        <a th:href="@{/articulos/{id}(id=${articulo.id})}"
+                                           class="btn btn-primary">Ver</a>
+                                        <a th:href="@{/articulos/delete/{id}(id=${articulo.id})}"
+                                        class="btn btn-primary">Borrar</a>
+                                        <a th:href="@{/articulos/edit/{id}(id=${articulo.id})}"
+                                           class="btn btn-primary">Actualizar</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    });
+</script>
+</body>
+</html>

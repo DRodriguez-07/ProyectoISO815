@@ -56,6 +56,14 @@ public class FacturaController {
         Factura factura = facturaRepository.findById(id).orElse(null);
         model.addAttribute("factura", factura);
 
+
+        double subTotal = 0;
+        for(DetalleFactura d : factura.getDetallesFactura()) {
+            subTotal += d.getPrecioUnitario() * d.getCantidad();
+        }
+
+        model.addAttribute("subtotal", subTotal);
+        model.addAttribute("total", (subTotal * factura.getVendedor().getPorcientoComision()) + subTotal);
         return "factura_detail";
     }
 

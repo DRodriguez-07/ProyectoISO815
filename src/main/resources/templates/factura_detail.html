@@ -7,7 +7,82 @@
 <body>
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
-    <div class="page-content overflow-auto">
+    <div class="page-content overflow-auto" th:object="${factura}">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Factura <span th:text="${factura.id}"></span></h3>
+                    <p class="mb-0 view-description">Detalles de la factura</p>
+                </div>
+            </div>
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Datos</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Fecha</label>
+                                    <input readonly type="date" class="form-control"
+                                           th:classappend="${#fields.hasErrors('fecha') ? 'is-invalid' : ''}"
+                                           th:field="*{fecha}"></input>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Vendedor</label>
+                                    <input class="form-control" readonly th:value="*{vendedor.nombre}">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Comentario</label>
+                                <textarea readonly rows="4" class="form-control"
+                                          th:classappend="${#fields.hasErrors('comentario') ? 'is-invalid' : ''}"
+                                          th:field="*{comentario}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-header">
+                            <h4 class="card-title">Detalles</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Articulo</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="detalle-tbody">
+                                <tr th:each="detalle: *{detallesFactura}">
+                                    <td th:text="${detalle.cantidad}"></td>
+                                    <td th:text="${detalle.precioUnitario}"></td>
+                                    <td th:text="${detalle.articulo.descripcion}"></td>
+                                    <td th:text="${detalle.cantidad * detalle.precioUnitario}"></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr><td></td><td></td><td></td><td>Subtotal</td><td><input id="fact-subtotal" th:value="${subtotal}" readonly class="form-control" /></td></tr>
+                                <tr><td></td><td></td><td></td><td>Comisión</td><td><input id="fact-comision" th:value="${subtotal * factura.vendedor.porcientoComision}" readonly class="form-control" /></td></tr>
+                                <tr><td></td><td></td><td></td><td>Total</td><td><input id="fact-total" readonly th:value="${total}" class="form-control" /></td></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

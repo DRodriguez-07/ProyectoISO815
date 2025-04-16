@@ -84,7 +84,7 @@ public class ContabilidadClient {
 
     }
 
-    public void agregarCuentaContable(String fechaAsiento, String descripcion, String cuentaId, String TipoMovimientoDB, String TipoMovimientoCR, double Montoasiento) {
+    public EntradaContable agregarEntradaContable(String fechaAsiento, String descripcion, String cuentaFactura, String cuentaCliente, double Montoasiento) {
         try {
             // Crear datos del asiento
             EntradaContable entrada = new EntradaContable();
@@ -93,19 +93,18 @@ public class ContabilidadClient {
             entrada.setFecha(fechaAsiento);
 
             DetallesEntradaContable d1 = new DetallesEntradaContable();
-            d1.setCuentaId(cuentaId);
-            d1.setTipoMovimiento(TipoMovimientoDB);
+            d1.setCuentaId(cuentaCliente);
+            d1.setTipoMovimiento("DB");
             d1.setMontoAsiento(Montoasiento);
 
             DetallesEntradaContable d2 = new DetallesEntradaContable();
-            d2.setCuentaId(cuentaId);
-            d2.setTipoMovimiento(TipoMovimientoCR);
+            d2.setCuentaId(cuentaFactura);
+            d2.setTipoMovimiento("CR");
             d2.setMontoAsiento(Montoasiento);
 
             entrada.setDetalles(List.of(d1, d2));
 
-            guardarEntradaContable(entrada);
-
+            return guardarEntradaContable(entrada);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

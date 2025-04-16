@@ -13,6 +13,7 @@ import java.util.List;
 
 @Data
 public class EntradaContable {
+    public Integer id;
     public String descripcion;
     public String sistemaAuxiliarId = "3";
     public String fecha;

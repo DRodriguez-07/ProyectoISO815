@@ -11,7 +11,7 @@
         <form method="POST" th:action="@{/asientoscontables/new}" th:object="${asientocontable}" class="container">
             <div class="row my-4 justify-content-center">
                 <div class="col-md-12 rounded bg-white p-3">
-                    <h3 class="view-title">Nueva Asiento</h3>
+                    <h3 class="view-title">Nuevo Asiento</h3>
                     <p class="mb-0 view-description">Crea un nuevo asiento</p>
                 </div>
 
@@ -23,47 +23,122 @@
                             </div>
                             <div class="card-body">
                                 <div class="row mb-3">
+                                    <input type="hidden" th:field="*{fecha}" />
+                                    <input type="hidden" th:field="*{cuentaContable}" />
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha Desde</label>
                                         <input type="date" class="form-control"
+                                               th:field="*{fechaDesde}"
                                                id="fecha-desde"></input>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha Hasta</label>
                                         <input type="date" class="form-control"
+                                               th:field="*{fechaHasta}"
                                                id="fecha-hasta"></input>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Cliente</label>
-                                        <select th:field="*{cliente}" class="form-select" >
+                                        <select id="cliente-select" th:field="*{cliente}" class="form-select" >
                                             <option th:each="clienteO : ${clientes}"
                                                     th:value="${clienteO.id}" th:text="${clienteO.nombreRazon}"></option>
                                         </select>
-                                        <div th:if="${#fields.hasErrors('cliente')}"
-                                             th:errors="*{cliente}" class="invalid-feedback">
-                                            Cliente invalido
-                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Monto</label>
+                                        <input readonly type="text" class="form-control"
+                                               th:field="*{monto}"
+                                               id="monto-input"></input>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Comentario</label>
-                                    <textarea rows="4" class="form-control"
-                                              th:classappend="${#fields.hasErrors('comentario') ? 'is-invalid' : ''}"
-                                              th:field="*{comentario}"></textarea>
-                                    <div th:if="${#fields.hasErrors('comentario')}"
-                                         th:errors="*{comentario}" class="invalid-feedback">
-                                        Comentario invalido
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Descripción</label>
+                                        <textarea class="form-control" readonly th:field="*{descripcion}" id="input-descripcion"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="row my-4 justify-content-center">
+                    <div class="col-md-12 rounded p-0">
+                        <div class="card page-card">
+                            <div class="card-header">
+                                <h4 class="card-title">Facturas</h4>
+                            </div>
+                            <div class="card-body">
+                                <table id="facturas-table" class="table data-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Fecha</th>
+                                        <th>Monto</th>
+                                        <th>Cliente</th>
+                                        <th>Vendedor</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-4 justify-content-end">
+                    <div class="col-md-2 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#fecha-desde').change(function() {
+            loadFacturas();
+        });
+        $('#fecha-hasta').change(function() {
+            loadFacturas();
+        });
+        $('#cliente-select').change(function() {
+            loadFacturas();
+        });
+
+        function loadFacturas() {
+            //$('#facturas-table').dataTable().clearTable();
+            $('#facturas-table').DataTable().destroy();
+            var table = new DataTable('#facturas-table');
+            $('#facturas-table tbody').empty();
+
+            let fechaDesde = $("#fecha-desde").val();
+            let fechaHasta = $("#fecha-hasta").val();
+            let cliente = $("#cliente-select").val();
+
+            const full = location.protocol + '//' + location.host;
+            $.ajax({url: `${full}/api/facturas?clienteId=${cliente}`, success: function (data) {
+
+                let montoTotal = 0;
+                data.forEach((el) => {
+                    var montoFactura = 0;
+                    el.detallesFactura.forEach((detalle) => {
+                        montoFactura += (detalle.precioUnitario * detalle.cantidad);
+                    });
+                    montoTotal += montoFactura;
+                    $('#facturas-table tbody').append($(`<tr><td>${el.id}</td><td>${el.fecha}</td><td>${montoFactura}</td><td>${el.cliente.nombreRazon}</td><td>${el.vendedor.nombre}</td></tr>`));
+                });
+                table = new DataTable('#facturas-table');
+                $('#monto-input').val(montoTotal);
+                $('#input-descripcion').val(`Asiento de ${$("#cliente-select option:selected" ).text()} desde ${fechaDesde} hasta ${fechaHasta} `);
+            }});
+
+
+        }
+    });
+</script>
 </body>
 </html>

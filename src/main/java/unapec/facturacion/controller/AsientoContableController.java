@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import unapec.facturacion.contabilidad.model.EntradaContable;
 import unapec.facturacion.domain.AsientoContable;
 import unapec.facturacion.repository.AsientoContableRepository;
+import unapec.facturacion.repository.ClienteRepository;
 import unapec.facturacion.service.ContabilidadClient;
+
+import java.text.SimpleDateFormat;
 
 @Controller
 @Slf4j
@@ -21,17 +25,21 @@ public class AsientoContableController {
     private final AsientoContableRepository repository;
     private final AsientoContableRepository asientoContableRepository;
     private ContabilidadClient contabilidadClient;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
-    public AsientoContableController(AsientoContableRepository repository, AsientoContableRepository asientoContableRepository, ContabilidadClient contabilidadClient) {
+    public AsientoContableController(AsientoContableRepository repository,
+                                     AsientoContableRepository asientoContableRepository,
+                                     ContabilidadClient contabilidadClient,
+                                     ClienteRepository clienteRepository) {
         this.repository = repository;
         this.asientoContableRepository = asientoContableRepository;
         this.contabilidadClient = contabilidadClient;
+        this.clienteRepository = clienteRepository;
     }
 
     @GetMapping("")
     public String index(Model model) {
-        contabilidadClient.agregarCuentaContable("2025-04-16T05:10:51.766Z", "Venta según Factura #31", "8", "DB", "CR", 400.0);
         model.addAttribute("asientoscontables", repository.findAll());
         return "asiento_list";
     }
@@ -48,17 +56,24 @@ public class AsientoContableController {
     public String create(Model model) {
         AsientoContable a = new AsientoContable();
         model.addAttribute("asientocontable", a);
+        model.addAttribute("clientes", clienteRepository.findAll());
         return "asiento_create";
     }
 
     @PostMapping("/new")
-    public String create(@Valid AsientoContable asiento, Errors errors) {
+    public String create(@Valid AsientoContable asiento, Errors errors, Model model) {
         if(errors.hasErrors()) {
+            model.addAttribute("clientes", clienteRepository.findAll());
             return "asiento_create";
         }
 
+        asiento.setEstado(AsientoContable.EstadoAsientoContable.Pendiente);
         asientoContableRepository.save(asiento);
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        EntradaContable e = contabilidadClient.agregarEntradaContable(simpleDateFormat.format(asiento.getFecha()), asiento.getDescripcion(), asiento.getCuentaContable().toString(), asiento.getCliente().getCuentaContable().toString(), asiento.getMonto());
+        asiento.setEstado(AsientoContable.EstadoAsientoContable.Registrado);
+        asiento.setEntradaContableId(e.getId());
+        asientoContableRepository.save(asiento);
         return "redirect:/asientoscontables";
     }
 

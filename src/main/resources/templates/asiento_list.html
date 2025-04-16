@@ -8,6 +8,51 @@
 <div class="container-fluid d-flex flex-row h-100 p-0">
     <div th:replace="layout::side-nav"></div>
     <div class="page-content overflow-auto">
+        <div class="container">
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded bg-white p-3">
+                    <h3 class="view-title">Asientos</h3>
+                    <p class="mb-0 view-description">Lista de Asientos</p>
+                </div>
+            </div>
+
+            <div class="row my-4 justify-content-center">
+                <div class="col-md-12 rounded p-0">
+                    <div class="card page-card">
+                        <div class="card-body">
+                            <div class="row my-2">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <a class="btn btn-info" th:href="@{/asientoscontables/new}">Nuevo Asiento</a>
+                                </div>
+                            </div>
+                            <table class="table data-table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha</th>
+                                    <th>Monto</th>
+                                    <th>Estado</th>
+                                    <th>No. Entrada Contable</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="asiento: ${asientoscontables}">
+                                    <td th:text="${asiento.id}"></td>
+                                    <td th:text="${asiento.descripcion}"></td>
+                                    <td><span th:text="${asiento.fechaDesde}"></span>-<span th:text="${asiento.fechaHasta}"></span> </td>
+                                    <td th:text="${asiento.monto}"></td>
+
+                                    <td><span class="badge rounded-pill bg-primary" th:text="${asiento.estado}"></span></td>
+                                    <td th:text="${asiento.entradaContableId}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

@@ -23,6 +23,7 @@ public class Factura {
     private Long id;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date fecha = new Date();
 
